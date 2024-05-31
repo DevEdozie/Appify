@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Appify</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_back">Welcome back! Glad to see you, Again</string>
+    <string name="enter_first_name">Enter First Name</string>
+    <string name="enter_last_name">Enter last name</string>
+    <string name="enter_password">Enter password</string>
+    <string name="login">LOGIN</string>
+    <string name="remember_me">Remember me</string>
+    <string name="welcome">Welcome</string>
+    <string name="employees">Employees</string>
+    <string name="logout">LOGOUT</string>
+    <string name="employee">Employee</string>
+    <string name="username_tag">USERNAME</string>
+    <string name="users">Users</string>
+    <string name="user">User</string>
+</resources>
