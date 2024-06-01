@@ -11,6 +11,7 @@ object SessionManager {
     private const val KEY_REMEMBER_ME = "remember_me"
     private const val KEY_FIRST_NAME = "first_name"
     private const val KEY_LAST_NAME = "last_name"
+    private const val KEY_IS_LOGGED_IN = "is_logged_in" // New key for login state
 
     /*
      * Function to save the username into SharedPreferences.
@@ -73,6 +74,18 @@ object SessionManager {
     }
 
     /*
+     * Function to save the login state into SharedPreferences.
+     * @param context - application context
+     * @param isLoggedIn - boolean value to be saved
+     */
+    fun saveLoginState(context: Context, isLoggedIn: Boolean) {
+        val prefs = getPreferences(context)
+        val editor = prefs.edit()
+        editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn)
+        editor.apply() // Apply changes asynchronously
+    }
+
+    /*
      * Function to retrieve the username from SharedPreferences.
      * @param context - application context
      * @return the saved username or null if not found
@@ -120,6 +133,16 @@ object SessionManager {
     fun getLastName(context: Context): String? {
         val prefs = getPreferences(context)
         return prefs.getString(KEY_LAST_NAME, null)
+    }
+
+    /*
+     * Function to retrieve the login state from SharedPreferences.
+     * @param context - application context
+     * @return the saved boolean value or false if not found
+     */
+    fun getLoginState(context: Context): Boolean {
+        val prefs = getPreferences(context)
+        return prefs.getBoolean(KEY_IS_LOGGED_IN, false)
     }
 
     /*

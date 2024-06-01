@@ -112,6 +112,8 @@ class HomeFragment : Fragment() {
             if (!isRemeberMeChecked) {
                 // Remove Saved user from shared preferences
                 SessionManager.clearData(requireContext())
+            }else{
+                SessionManager.saveLoginState(requireContext(),false)
             }
             // Navigate to login screen
             findNavController().navigate(R.id.action_homeFragment_to_loginFragment)

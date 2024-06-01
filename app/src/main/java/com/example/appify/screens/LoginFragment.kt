@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.appify.utilities.LoadingDialog
@@ -64,29 +65,45 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Override the back button behavior
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // Close the app when the back button is pressed
+                    requireActivity().finish()
+                }
+            })
+    }
+
     // Function to check the login status and navigate accordingly
     private fun checkLoginStatus() {
-        val username = SessionManager.getUsername(requireContext())
-        val userId = SessionManager.getUserId(requireContext())
-        val firstName = SessionManager.getFirstName(requireContext())
-        val lastName = SessionManager.getLastName(requireContext())
-        val password = "password"
-        val currentUser = username?.let { User(userId, it) }
+        val context = requireContext()
+        val isLoggedIn = SessionManager.getLoginState(context)
 
-        // If the user is already logged in, handle the "remember me" functionality
-        if (currentUser != null) {
-            val isRememberMeChecked = SessionManager.getRememberMeStatus(requireContext())
-            if (isRememberMeChecked) {
-                binding.firstNameEt.setText(firstName)
-                binding.lastNameEt.setText(lastName)
-                binding.passwordEt.setText(password)
-            } else {
-                // Navigate to the home fragment if the user is logged in
-                val directions = LoginFragmentDirections.actionLoginFragmentToHomeFragment(currentUser)
-                findNavController().navigate(directions)
-            }
+        if (isLoggedIn) {
+            // Navigate to the home fragment if the user is logged in
+            val userId = SessionManager.getUserId(context)
+            val username = SessionManager.getUsername(context) ?: return
+            val currentUser = User(userId, username)
+            val directions = LoginFragmentDirections.actionLoginFragmentToHomeFragment(currentUser)
+            findNavController().navigate(directions)
+        } else {
+            // Populate the fields if the user is not logged in
+            val firstName = SessionManager.getFirstName(context)
+            val lastName = SessionManager.getLastName(context)
+            val password = "password"
+
+            binding.firstNameEt.setText(firstName)
+            binding.lastNameEt.setText(lastName)
+            binding.passwordEt.setText(password)
         }
     }
+
 
     // Function to observe user data from the ViewModel
     private fun observeUsersData() {
@@ -185,6 +202,7 @@ class LoginFragment : Fragment() {
             SessionManager.saveRememberMeStatus(requireContext(), checkboxState)
             SessionManager.saveFirstName(requireContext(), firstName)
             SessionManager.saveLastName(requireContext(), lastName)
+            SessionManager.saveLoginState(requireContext(),true)
 
             stopLoading()
             val currentUser = userId?.let { User(it, name) }
