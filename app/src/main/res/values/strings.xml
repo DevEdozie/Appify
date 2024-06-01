@@ -13,6 +13,7 @@
     <string name="logout">LOGOUT</string>
     <string name="employee">Employee</string>
     <string name="username_tag">USERNAME</string>
+    <string name="user_id_tag">USERID</string>
     <string name="users">Users</string>
     <string name="user">User</string>
 </resources>

@@ -22,5 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <argument
+            android:name="user"
+            app:argType="com.example.appify.database.model.User"
+            app:nullable="true" />
     </fragment>
 </navigation>
